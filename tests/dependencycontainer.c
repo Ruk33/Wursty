@@ -12,6 +12,7 @@ void main()
 
 	Dependency_set_version(r, "batman");
 
+	ei(DEPENDENCY_CONTAINER_INVALID_DEPENDENCY, DependencyContainer_add(dc, NULL));
 	ei(DEPENDENCY_CONTAINER_ADDED_CORRECTLY, DependencyContainer_add(dc, d));
 	ei(DEPENDENCY_CONTAINER_ALREADY_ADDED, DependencyContainer_add(dc, d));
 	ei(DEPENDENCY_CONTAINER_VERSION_ERROR, DependencyContainer_add(dc, r));
