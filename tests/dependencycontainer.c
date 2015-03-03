@@ -12,13 +12,13 @@ void main()
 
 	Dependency_set_version(r, "batman");
 
-	ei(1, DependencyContainer_add(dc, d));
-	ei(0, DependencyContainer_add(dc, d));
-	ei(-1, DependencyContainer_add(dc, r));
-	ei(1, DependencyContainer_add(dc, e));
-	ei(2, dc->count);
+	ei(DEPENDENCY_CONTAINER_ADDED_CORRECTLY, DependencyContainer_add(dc, d));
+	ei(DEPENDENCY_CONTAINER_ALREADY_ADDED, DependencyContainer_add(dc, d));
+	ei(DEPENDENCY_CONTAINER_VERSION_ERROR, DependencyContainer_add(dc, r));
+	ei(DEPENDENCY_CONTAINER_ADDED_CORRECTLY, DependencyContainer_add(dc, e));
 	a(dc->dependencies[0] == d, "first dependency in dependencycontainer isnt correct");
 	a(dc->dependencies[1] == e, "second dependency in dependencycontainer isnt correct");
+	ei(2, dc->count);
 
 	DependencyContainer_destroy(dc);
 	free(d);
