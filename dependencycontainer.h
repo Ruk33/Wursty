@@ -31,6 +31,7 @@ void DependencyContainer_destroy(struct DependencyContainer *dc)
 
 	for (i = 0; i < dc->count; i++) {
 		Dependency_destroy(dc->dependencies[i]);
+		dc->dependencies[i] = NULL;
 	}
 
 	free(dc->dependencies);
@@ -65,6 +66,7 @@ char DependencyContainer_dependency_is_registered(struct DependencyContainer *dc
 int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d)
 {
 	struct Dependency *dependency;
+	int result = DEPENDENCY_CONTAINER_ADDED_CORRECTLY;
 	int i;
 
 	if (!d || strlen(d->url) == 0) {
@@ -82,23 +84,27 @@ int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d
 		if (strcmp(dependency->name, dc->dependencies[i]->name) == 0) {
 			// Dependency is already registered, so lets check its version
 			if (strcmp(dc->dependencies[i]->version, dependency->version) == 0) {
-				Dependency_destroy(dependency);
-				return DEPENDENCY_CONTAINER_ALREADY_ADDED;
+				result = DEPENDENCY_CONTAINER_ALREADY_ADDED;
 			} else {
-				Dependency_destroy(dependency);
-				return DEPENDENCY_CONTAINER_VERSION_ERROR;
+				result = DEPENDENCY_CONTAINER_VERSION_ERROR;
 			}
+
+			break;
 		}
 	}
 
-	dc->dependencies[dc->count] = dependency;
-	dc->count++;
+	if (result == DEPENDENCY_CONTAINER_ADDED_CORRECTLY) {
+		dc->dependencies[dc->count] = dependency;
+		dc->count++;
 
-	dc->dependencies = realloc(dc->dependencies, sizeof(struct Dependency) * dc->count);
+		dc->dependencies = realloc(dc->dependencies, sizeof(struct Dependency) * dc->count);
+	} else {
+		Dependency_destroy(dependency);
+	}
 
 	dependency = NULL;
 
-	return DEPENDENCY_CONTAINER_ADDED_CORRECTLY;
+	return result;
 }
 
 #endif

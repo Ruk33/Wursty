@@ -24,7 +24,6 @@ struct Dependency
 char *dependency_get_update_command(struct Dependency *dependency, const char *path)
 {
 	struct stat *s = malloc(sizeof(struct stat));
-	char current_path[1024];
 
 	char *dependency_path = NULL;
 	char *command = NULL;
@@ -114,6 +113,9 @@ void Dependency_set_name_from_url(struct Dependency *dependency)
 	}
 
 	Dependency_set_name(dependency, name);
+
+	free(name);
+	name = NULL;
 }
 
 struct Dependency *Dependency_create()
