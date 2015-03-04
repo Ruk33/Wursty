@@ -46,12 +46,12 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 		}
 	}
 
-	//DependencyContainer_destroy(dc);
+	DependencyContainer_destroy(ddc);
 
 	free(dependency_file_path);
 	free(dependency_package_folder);
 
-	//ddc = NULL;
+	ddc = NULL;
 	dependency_file_path = NULL;
 	dependency_package_folder = NULL;
 }
