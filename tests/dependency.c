@@ -63,7 +63,7 @@ void main()
 
 	command = dstrcpy(command, "cd ");
 	command = dstrcat(command, current_path);
-	command = dstrcat(command, "/testdependency && git pull --quiet origin master && git checkout ");
+	command = dstrcat(command, "/testdependency && git pull --quiet origin master && git checkout --quiet ");
 	command = dstrcat(command, c->version);
 
 	ec(command, dependency_get_update_command(c, current_path));
@@ -74,7 +74,7 @@ void main()
 	command = dstrcat(command, current_path);
 	command = dstrcat(command, "/dependency && cd ");
 	command = dstrcat(command, current_path);
-	command = dstrcat(command, "/dependency && git checkout 1234");
+	command = dstrcat(command, "/dependency && git checkout --quiet 1234");
 	ec(command, dependency_get_update_command(c, current_path));
 
 	Dependency_destroy(d);
