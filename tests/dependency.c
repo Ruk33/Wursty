@@ -21,7 +21,6 @@ void main()
 
 	Dependency_set_name(d, NULL);
 	ec("", d->name);
-
 	ec("", d->url);
 
 	Dependency_set_url(d, "github.com:Ruk33/something.git");
@@ -35,7 +34,7 @@ void main()
 
 	Dependency_set_url(d, "github.com:Ruk33/something.git");
 	Dependency_set_name_from_url(d);
-	ec("Ruk33/something", d->name);
+	ec("something", d->name);
 
 	ec("master", d->version);
 	Dependency_set_version(d, "15654651");
@@ -47,7 +46,7 @@ void main()
 	Dependency_set_version(d, "");
 	ec("master", d->version);
 
-	ec("Ruk33/something", from_url->name);
+	ec("something", from_url->name);
 	ec("", from_invalid_url->name);
 
 	ec("github.com:Ruk33/something.git", from_url->url);

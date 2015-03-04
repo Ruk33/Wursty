@@ -95,25 +95,40 @@ void Dependency_set_version(struct Dependency *dependency, const char *version)
 
 void Dependency_set_name_from_url(struct Dependency *dependency)
 {
+	char *full_name = NULL;
 	char *name = NULL;
-	size_t name_len;
 
-	name = dstrcpy(name, strchr(dependency->url, ':'));
-	name_len = strlen(name);
-
-	if (name_len > 0) {
-		// Remove ":"
-		name++;
+	if (dependency->url && strcmp(dependency->url, "") != 0) {
+		full_name = dstrcpy(full_name, strchr(dependency->url, ':'));
 	}
 
-	if (name_len >= 4) {
-		// Remove .git from name
-		name[strlen(name)-4] = '\0';
+	if (full_name) {
+		// Remove ":"
+		full_name++;
+
+		name = dstrcpy(name, strchr(full_name, '/'));
+
+		if (name) {
+			// Remove "/"
+			name++;
+			if (strlen(name) > 4) {
+				// Remove ".git"
+				name[strlen(name)-4] = '\0';
+			}
+		} else {
+			//name = dstrcpy(name, NULL);
+		}
+
+		free(full_name);
 	}
 
 	Dependency_set_name(dependency, name);
 
-	free(name);
+	if (name) {
+		free(name);
+	}
+
+	full_name = NULL;
 	name = NULL;
 }
 
