@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "setstr.h"
+#include "dstr.h"
 
 #ifndef DEPENDENCY_H_INCLUDED
 #define DEPENDENCY_H_INCLUDED
@@ -29,30 +29,33 @@ char *dependency_get_update_command(struct Dependency *dependency, const char *p
 	char *dependency_path = NULL;
 	char *command = NULL;
 
-	getcwd(current_path, sizeof(current_path));
+	//getcwd(current_path, sizeof(current_path));
 
-	dependency_path = setstr(current_path);
-	dependency_path = appstr(dependency_path, "/");
-	dependency_path = appstr(dependency_path, path);
-	dependency_path = appstr(dependency_path, dependency->name);
+	//dependency_path = setstr(current_path);
+	//dependency_path = appstr(dependency_path, "/");
+	dependency_path = dstrcpy(dependency_path, path);
+	dependency_path = dstrcat(dependency_path, "/");
+	dependency_path = dstrcat(dependency_path, dependency->name);
 
 	stat(dependency_path, s);
 
-	command = setstr("cd ");
-	command = appstr(command, dependency_path);
-	command = appstr(command, " && ");
-
 	// If dependency folder already exists
 	if (s->st_mode & S_IFDIR) {
-		command = appstr(command, "git pull origin master");
+		command = dstrcpy(command, "cd ");
+		command = dstrcat(command, dependency_path);
+		command = dstrcat(command, " && ");
+		command = dstrcat(command, "git pull origin master");
 	} else {
-		command = appstr(command, "git clone --progress --quiet ");
-		command = appstr(command, dependency->url);
-		command = appstr(command, " .");
+		command = dstrcpy(command, "git clone --progress --quiet ");
+		command = dstrcat(command, dependency->url);
+		command = dstrcat(command, " ");
+		command = dstrcat(command, dependency_path);
+		command = dstrcat(command, " && cd ");
+		command = dstrcat(command, dependency_path);
 	}
 
-	command = appstr(command, " && git checkout ");
-	command = appstr(command, dependency->version);
+	command = dstrcat(command, " && git checkout ");
+	command = dstrcat(command, dependency->version);
 
 	free(s);
 	free(dependency_path);
@@ -79,39 +82,39 @@ void Dependency_update(struct Dependency *dependency, const char *path)
 
 void Dependency_set_name(struct Dependency *dependency, const char *name)
 {
-	free(dependency->name);
-	dependency->name = setstr(name);
+	dependency->name = dstrcpy(dependency->name, name);
 }
 
 void Dependency_set_url(struct Dependency *dependency, const char *url)
 {
-	free(dependency->url);
-	dependency->url = setstr(url);
+	dependency->url = dstrcpy(dependency->url, url);
 }
 
 void Dependency_set_version(struct Dependency *dependency, const char *version)
 {
-	free(dependency->version);
-
 	if (version && strcmp(version, "") != 0) {
-		dependency->version = setstr(version);
+		dependency->version = dstrcpy(dependency->version, version);
 	} else {
-		dependency->version = setstr("master");
+		dependency->version = dstrcpy(dependency->version, "master");
 	}
 }
 
 void Dependency_set_name_from_url(struct Dependency *dependency)
 {
-	char *name = strchr(dependency->url, ':');
+	char *name = NULL;
+	size_t name_len;
 
-	if (name) {
+	name = dstrcpy(name, strchr(dependency->url, ':'));
+	name_len = strlen(name);
+
+	if (name_len > 0) {
 		// Remove ":"
 		name++;
+	}
 
+	if (name_len >= 4) {
 		// Remove .git from name
 		name[strlen(name)-4] = '\0';
-	} else {
-		name = "";
 	}
 
 	Dependency_set_name(dependency, name);
@@ -121,10 +124,12 @@ struct Dependency *Dependency_create()
 {
 	struct Dependency *instance = malloc(sizeof(struct Dependency));
 
-	instance->name = "";
-	instance->url = "";
-	instance->version = "";
+	instance->name = NULL;
+	instance->url = NULL;
+	instance->version = NULL;
 
+	Dependency_set_name(instance, NULL);
+	Dependency_set_url(instance, NULL);
 	Dependency_set_version(instance, NULL);
 
 	return instance;

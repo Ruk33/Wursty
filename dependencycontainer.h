@@ -35,17 +35,24 @@ void DependencyContainer_destroy(struct DependencyContainer *dc)
 
 struct Dependency *DependencyContainer_get_dependency_by_name(struct DependencyContainer *dc, const char *name)
 {
-	struct Dependency *d = NULL;
 	int i;
 
 	for (i = 0; i < dc->count; i++) {
 		if (strcmp(name, dc->dependencies[i]->name) == 0) {
-			d = dc->dependencies[i];
-			break;
+			return dc->dependencies[i];
 		}
 	}
 
-	return d;
+	return NULL;
+}
+
+char DependencyContainer_dependency_is_registered(struct DependencyContainer *dc, const char *dependency_name)
+{
+	if (dc && dependency_name) {
+		return DependencyContainer_get_dependency_by_name(dc, dependency_name) != NULL;
+	}
+
+	return 0;
 }
 
 int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d)

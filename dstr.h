@@ -7,15 +7,22 @@
 
 char *dstrcpy(char *source, const char *to_copy)
 {
-	if (source != NULL) {
-		free(source);
+	size_t to_copy_len = 0;
+
+	if (to_copy != NULL) {
+		to_copy_len = strlen(to_copy);
+	}
+
+	if (source == NULL) {
+		source = malloc(sizeof(char) * (to_copy_len+1));
+	} else {
+		source = realloc(source, sizeof(char) * (strlen(source)+to_copy_len+1));
 	}
 
 	if (to_copy != NULL) {
-		source = malloc(sizeof(char) * (strlen(to_copy)+1));
 		source = strcpy(source, to_copy);
 	} else {
-		source = calloc(1, sizeof(char));
+		source = strcpy(source, "");
 	}
 
 	return source;

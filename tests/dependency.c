@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "assert.h"
-#include "../setstr.h"
+#include "../dstr.h"
 #include "../dependency.h"
 
 void main()
@@ -11,7 +11,8 @@ void main()
 	struct Dependency *from_invalid_url = Dependency_create_from_url(NULL);
 	struct Dependency *c = Dependency_create();
 	char current_path[1024];
-	char *command;
+	char *update_path = NULL;
+	char *command = NULL;
 
 	ec("", d->name);
 
@@ -49,6 +50,8 @@ void main()
 	ec("Ruk33/something", from_url->name);
 	ec("", from_invalid_url->name);
 
+	ec("github.com:Ruk33/something.git", from_url->url);
+
 	ec("master", from_url->version);
 	ec("master", from_invalid_url->version);
 
@@ -58,21 +61,21 @@ void main()
 
 	getcwd(current_path, sizeof(current_path));
 
-	command = setstr("cd ");
-	command = appstr(command, current_path);
-	command = appstr(command, "/testdependency && git pull origin master && git checkout ");
-	command = appstr(command, c->version);
+	command = dstrcpy(command, "cd ");
+	command = dstrcat(command, current_path);
+	command = dstrcat(command, "/testdependency && git pull origin master && git checkout ");
+	command = dstrcat(command, c->version);
 
-	ec(command, dependency_get_update_command(c, ""));
-
-	free(command);
+	ec(command, dependency_get_update_command(c, current_path));
 
 	Dependency_set_name(c, "dependency");
 
-	command = setstr("cd ");
-	command = appstr(command, current_path);
-	command = appstr(command, "/dependency && git clone --progress --quiet google.com . && git checkout 1234");
-	ec(command, dependency_get_update_command(c, ""));
+	command = dstrcpy(command, "git clone --progress --quiet google.com ");
+	command = dstrcat(command, current_path);
+	command = dstrcat(command, "/dependency && cd ");
+	command = dstrcat(command, current_path);
+	command = dstrcat(command, "/dependency && git checkout 1234");
+	ec(command, dependency_get_update_command(c, current_path));
 
 	free(d);
 	free(from_url);

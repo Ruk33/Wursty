@@ -9,6 +9,7 @@ void main()
 	struct Dependency *d = Dependency_create_from_url("github.com:Ruk33/something.git");
 	struct Dependency *r = Dependency_create_from_url("github.com:Ruk33/something.git");
 	struct Dependency *e = Dependency_create_from_url("github.com:Ruk33/lolipop.git");
+	struct Dependency *s = Dependency_create_from_url("github.com:Ruk33/something.git");
 
 	Dependency_set_version(r, "batman");
 
@@ -21,8 +22,15 @@ void main()
 	a(dc->dependencies[1] == e, "second dependency in dependencycontainer isnt correct");
 	ei(2, dc->count);
 
+	a(DependencyContainer_dependency_is_registered(dc, d->name), "dependency d doesnt show up as registered in dc");
+	a(!DependencyContainer_dependency_is_registered(dc, NULL), "null shouldnt be mark as registered in dc");
+	a(!DependencyContainer_dependency_is_registered(NULL, d->name), "d shouldnt be marked as registered in a null dependency container");
+	a(DependencyContainer_dependency_is_registered(dc, s->name), "s should be marked as registered in dc");
+	a(!DependencyContainer_dependency_is_registered(dc, "pocho"), "pocho shouldnt be marked as registered in dc");
+
 	DependencyContainer_destroy(dc);
 	free(d);
 	free(r);
 	free(e);
+	free(s);
 }
