@@ -1,3 +1,6 @@
+/*
+ * deprecated
+ */
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,7 +10,7 @@
 
 /**
  * Dinamic strings, damn!
- * 
+ *
  * Be careful of leaks
  *
  * char *s = setstr("something");
