@@ -35,6 +35,17 @@ Simple run this command
 cd wurst/project && wursty run
 ```
 
+This will grab all the dependencies of your project and place them in the vendor folder.
+
+Example:
+- proyect root
+  - wurst
+    - vendor
+      - `<github user name for dependency 1>`
+        - `<package name>`
+      - `<github user name for dependency 2>`
+        - `<package name>`
+
 ##What happens if a dependency is requested in multiple versions?
 It will (when implemented) only display an error message (I know, high tech).
 
