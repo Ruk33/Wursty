@@ -63,14 +63,14 @@ void main()
 
 	command = dstrcpy(command, "cd ");
 	command = dstrcat(command, current_path);
-	command = dstrcat(command, "/testdependency && git pull origin master && git checkout ");
+	command = dstrcat(command, "/testdependency && git pull --quiet origin master && git checkout ");
 	command = dstrcat(command, c->version);
 
 	ec(command, dependency_get_update_command(c, current_path));
 
 	Dependency_set_name(c, "dependency");
 
-	command = dstrcpy(command, "git clone --progress --quiet google.com ");
+	command = dstrcpy(command, "git clone --quiet --no-checkout google.com ");
 	command = dstrcat(command, current_path);
 	command = dstrcat(command, "/dependency && cd ");
 	command = dstrcat(command, current_path);

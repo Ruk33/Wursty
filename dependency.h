@@ -38,10 +38,9 @@ char *dependency_get_update_command(struct Dependency *dependency, const char *p
 	if (s->st_mode & S_IFDIR) {
 		command = dstrcpy(command, "cd ");
 		command = dstrcat(command, dependency_path);
-		command = dstrcat(command, " && ");
-		command = dstrcat(command, "git pull origin master");
+		command = dstrcat(command, " && git pull --quiet origin master");
 	} else {
-		command = dstrcpy(command, "git clone --progress --quiet ");
+		command = dstrcpy(command, "git clone --quiet --no-checkout ");
 		command = dstrcat(command, dependency->url);
 		command = dstrcat(command, " ");
 		command = dstrcat(command, dependency_path);
@@ -49,7 +48,7 @@ char *dependency_get_update_command(struct Dependency *dependency, const char *p
 		command = dstrcat(command, dependency_path);
 	}
 
-	command = dstrcat(command, " && git checkout ");
+	command = dstrcat(command, " && git checkout --quiet ");
 	command = dstrcat(command, dependency->version);
 
 	free(s);

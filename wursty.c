@@ -19,6 +19,7 @@ void update_all_dependencies(struct DependencyContainer *dc, struct Dependency *
 	dependency_file_path = dstrcat(dependency_file_path, "/dependencies");
 
 	if (!get_all_dependencies_from_dependencies_file(dependency_file_path, ddc)) {
+		printf("%s\n", dependency_file_path);
 		printf("\n >> [WARN] dependencies file was not found\n");
 	}
 
@@ -31,7 +32,7 @@ void update_all_dependencies(struct DependencyContainer *dc, struct Dependency *
 					printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
 				}
 
-				printf(ANSI_COLOR_GREEN"    >> [OK] Updating dependency\n\n"ANSI_COLOR_RESET);
+				printf(ANSI_COLOR_GREEN"    >> [OK] Updating dependency...\n\n"ANSI_COLOR_RESET);
 
 				dependency_package_folder = dstrcpy(dependency_package_folder, package_root_folder_path);
 				dependency_package_folder = dstrcat(dependency_package_folder, "/");
@@ -85,7 +86,7 @@ int main(int argc, char *args[])
 		project_root_path = dstrcpy(project_root_path, current_path);
 	}
 
-	project_root_path = dstrcat(project_root_path, "/");
+	//project_root_path = dstrcat(project_root_path, "/");
 	dependencies_folder_path = dstrcpy(dependencies_folder_path, project_root_path);
 	dependencies_folder_path = dstrcat(dependencies_folder_path, "/wurst/vendor");
 
