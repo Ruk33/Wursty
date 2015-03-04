@@ -1,10 +1,10 @@
 #Wursty - a wurst dependency manager
 
-Wursty is a very simple dependency manager for [Wurst](https://github.com/peq/WurstScript) projects.
+Wursty is a very simple dependency manager for [Wurst](https://github.com/peq/WurstScript) projects/packages.
 
 ##How to use it?
 First compile wursty so you get wursty.exe. Place this .exe in your wurst project.
-Then, create a 'dependencies' (without quotes) and place it in your wurst project too (this file will contain all the dependencies and its versions).
+Then, create a 'dependencies' file (without quotes) and place it in your wurst project too (this file will contain all the dependencies and its versions).
 
 ##How to write a dependencies file?
 Its simple, the format is:
@@ -14,8 +14,7 @@ Its simple, the format is:
 <dependency repository url>,<version/commit>
 ```
 
-**Note:** Version are not supported yet, so avoid them (just write the dependency url)
-**Note example:**
+**Note:** Version are not supported yet, so avoid them (just write the dependency url), example:
 ```
 <dependency repository url>
 <dependency repository url>
