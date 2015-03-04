@@ -93,7 +93,7 @@ void Dependency_set_version(struct Dependency *dependency, const char *version)
 	if (version && strcmp(version, "") != 0) {
 		dependency->version = setstr(version);
 	} else {
-		dependency->version = setstr("HEAD");
+		dependency->version = setstr("master");
 	}
 }
 
@@ -122,7 +122,7 @@ struct Dependency *Dependency_create()
 	instance->url = "";
 	instance->version = "";
 
-	Dependency_set_version(instance, "HEAD");
+	Dependency_set_version(instance, NULL);
 
 	return instance;
 }

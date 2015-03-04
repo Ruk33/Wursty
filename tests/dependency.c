@@ -36,21 +36,21 @@ void main()
 	Dependency_set_name_from_url(d);
 	ec("Ruk33/something", d->name);
 
-	ec("HEAD", d->version);
+	ec("master", d->version);
 	Dependency_set_version(d, "15654651");
 	ec("15654651", d->version);
 
 	Dependency_set_version(d, NULL);
-	ec("HEAD", d->version);
+	ec("master", d->version);
 
 	Dependency_set_version(d, "");
-	ec("HEAD", d->version);
+	ec("master", d->version);
 
 	ec("Ruk33/something", from_url->name);
 	ec("", from_invalid_url->name);
 
-	ec("HEAD", from_url->version);
-	ec("HEAD", from_invalid_url->version);
+	ec("master", from_url->version);
+	ec("master", from_invalid_url->version);
 
 	Dependency_set_name(c, "testdependency");
 	Dependency_set_url(c, "google.com");

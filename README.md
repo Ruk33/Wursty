@@ -22,11 +22,11 @@ Its simple, the format is:
 
 Example
 ```
-http://github.com/Ruk33/somepackage.git,HEAD
+http://github.com/Ruk33/somepackage.git,master
 http://github.com/Ruk33/other_somepackage.git,a4537c55af4cdc563efbcaade51650030a1ca20e
 ```
 
-If no version is pointed, HEAD will be.
+If no version is pointed, master will be.
 
 ##I have the .exe in the root folder and the dependencies file created, what now?
 Simple run this command
