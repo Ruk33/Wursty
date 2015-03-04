@@ -14,7 +14,7 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 	dependency_file_path = dstrcpy(dependency_file_path, package_folder_path);
 	dependency_file_path = dstrcat(dependency_file_path, "/dependencies");
 
-	if (!get_all_dependencies_from_dependencies_file(dependency_file_path, ddc, 0)) {
+	if (!get_all_dependencies_from_dependencies_file(dependency_file_path, ddc)) {
 		printf("\n >> dependencies was not found\n");
 	}
 
@@ -27,7 +27,7 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 				dependency_package_folder = dstrcat(dependency_package_folder, "/");
 				dependency_package_folder = dstrcat(dependency_package_folder, ddc->dependencies[i]->name);
 
-				Dependency_update(ddc->dependencies[i], package_root_folder_path);
+				//Dependency_update(ddc->dependencies[i], package_root_folder_path);
 				update_all_dependencies(dc, package_root_folder_path, dependency_package_folder);
 
 				break;

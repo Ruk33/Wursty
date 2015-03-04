@@ -16,5 +16,11 @@ int main()
 	ec("git@github.com:Ruk33/wursty-test-dependency.git", dc->dependencies[1]->url);
 	ec("master", dc->dependencies[1]->version);
 
+	get_all_dependencies_from_dependencies_file("dependencies", dc);
+	get_all_dependencies_from_dependencies_file("dependencies2", dc);
+
 	ei(2, dc->count);
+
+	DependencyContainer_destroy(dc);
+	dc = NULL;
 }
