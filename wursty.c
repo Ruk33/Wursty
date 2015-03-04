@@ -15,43 +15,43 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 	dependency_file_path = dstrcat(dependency_file_path, "/dependencies");
 
 	if (!get_all_dependencies_from_dependencies_file(dependency_file_path, ddc)) {
-		printf("\n >> dependencies was not found\n");
+		printf("\n >> [WARN] dependencies file was not found\n");
 	}
 
 	for (i = 0; i < ddc->count; i++) {
-		printf("\n >> Updating dependency %s\n", ddc->dependencies[i]->name);
-
 		switch (DependencyContainer_add(dc, ddc->dependencies[i])) {
 			case DEPENDENCY_CONTAINER_ADDED_CORRECTLY:
+				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
+				printf("    >> [OK] Updating dependency\n\n");
+
 				dependency_package_folder = dstrcpy(dependency_package_folder, package_root_folder_path);
 				dependency_package_folder = dstrcat(dependency_package_folder, "/");
 				dependency_package_folder = dstrcat(dependency_package_folder, ddc->dependencies[i]->name);
 
-				//Dependency_update(ddc->dependencies[i], package_root_folder_path);
+				Dependency_update(ddc->dependencies[i], package_root_folder_path);
 				update_all_dependencies(dc, package_root_folder_path, dependency_package_folder);
 
 				break;
 
 			case DEPENDENCY_CONTAINER_VERSION_ERROR:
-				printf("%s - \n", dependency_package_folder);
-
+				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
 				printf(
-					"\n >> [ERROR] Dependency %s is required in version %s but version %s is already registered\n",
-					ddc->dependencies[i]->name,
+					"    >> [ERROR] Dependency is required in version %s but version %s is already registered by %s\n",
 					ddc->dependencies[i]->version,
-					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->version
+					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->version,
+					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->name
 				);
 
 				break;
 		}
 	}
 
-	DependencyContainer_destroy(dc);
+	//DependencyContainer_destroy(dc);
 
 	free(dependency_file_path);
 	free(dependency_package_folder);
 
-	ddc = NULL;
+	//ddc = NULL;
 	dependency_file_path = NULL;
 	dependency_package_folder = NULL;
 }
