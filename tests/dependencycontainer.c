@@ -14,8 +14,6 @@ void main()
 
 	Dependency_set_version(r, "batman");
 
-	ei(DEPENDENCY_CONTAINER_INVALID_DEPENDENCY, DependencyContainer_add(dc, NULL));
-
 	ei(DEPENDENCY_CONTAINER_INVALID_DEPENDENCY, DependencyContainer_add(dc, i));
 	Dependency_set_url(i, "github.com:Ruk33/lorem.git");
 	ei(DEPENDENCY_CONTAINER_ADDED_CORRECTLY, DependencyContainer_add(dc, i));
@@ -27,9 +25,9 @@ void main()
 
 	ei(DEPENDENCY_CONTAINER_ADDED_CORRECTLY, DependencyContainer_add(dc, e));
 
-	a(dc->dependencies[0] == i, "first dependency in dependencycontainer isnt correct");
-	a(dc->dependencies[1] == d, "second dependency in dependencycontainer isnt correct");
-	a(dc->dependencies[2] == e, "third dependency in dependencycontainer isnt correct");
+	ec(dc->dependencies[0]->name, i->name);
+	ec(dc->dependencies[1]->name, d->name);
+	ec(dc->dependencies[2]->name, e->name);
 
 	ei(3, dc->count);
 
@@ -41,10 +39,10 @@ void main()
 
 	DependencyContainer_destroy(dc);
 
-	free(d);
-	free(r);
-	free(e);
-	free(s);
+	Dependency_destroy(d);
+	Dependency_destroy(r);
+	Dependency_destroy(e);
+	Dependency_destroy(s);
 
 	d = NULL;
 	r = NULL;
