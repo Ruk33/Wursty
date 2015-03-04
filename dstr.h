@@ -15,11 +15,7 @@ char *dstrcpy(char *source, const char *to_copy)
 		source = malloc(sizeof(char) * (strlen(to_copy)+1));
 		source = strcpy(source, to_copy);
 	} else {
-		source = calloc(0, sizeof(char));
-	}
-
-	if (source[strlen(source)+1] != '\0') {
-		source[strlen(source)+1] = '\0';
+		source = calloc(1, sizeof(char));
 	}
 
 	return source;
@@ -41,12 +37,18 @@ char *dstrcat(char *source, const char *append)
 
 char *dstrcatc(char *source, const char append)
 {
+	size_t slen;
+
 	if (source == NULL) {
 		source = dstrcpy(source, NULL);
 	}
 
-	if (append != '\0') {
-		source = realloc(source, sizeof(char) * (strlen(source)+2));
+	slen = strlen(source);
+
+	if (append == '\0' && source[slen+1] == '\0') { // avoid multiple eof
+
+	} else {
+		source = realloc(source, sizeof(char) * (slen+2));
 		sprintf(source, "%s%c", source, append);
 	}
 

@@ -3,7 +3,7 @@
 #include "dependency.h"
 #include "dependencycontainer.h"
 #include "dependency.h"
-#include "setstr.h"
+#include "dstr.h"
 
 #ifndef DEPENDENCIES_FILE_READER_H_INCLUDED
 #define DEPENDENCIES_FILE_READER_H_INCLUDED
@@ -25,7 +25,7 @@ void get_all_dependencies_from_dependencies_file(const char *path, struct Depend
 		ch = fgetc(dependency_file);
 
 		if (ch == '\n' || ch == EOF) {
-			dependency_url = setstr(line);
+			dependency_url = dstrcpy(dependency_url, line);
 			dependency_version = strrchr(line, ',');
 
 			if (dependency_version) {
@@ -53,7 +53,7 @@ void get_all_dependencies_from_dependencies_file(const char *path, struct Depend
 			dependency_url = NULL;
 			dependency_version = NULL;
 		} else {
-			line = appstr(line, &ch);
+			line = dstrcatc(line, ch);
 		}
 	} while(ch != EOF);
 
