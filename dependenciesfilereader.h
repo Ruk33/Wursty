@@ -39,15 +39,11 @@ int get_all_dependencies_from_dependencies_file(const char *path, struct Depende
 			dependency = Dependency_create_from_url(dependency_url);
 			Dependency_set_version(dependency, dependency_version);
 
-			DependencyContainer_add(dc, dependency);
+			if (DependencyContainer_add(dc, dependency) != DEPENDENCY_CONTAINER_ADDED_CORRECTLY) {
+				Dependency_destroy(dependency);
+			}
 
-			free(line);
-			free(dependency_url);
-			free(dependency_version);
-
-			line = NULL;
-			dependency_url = NULL;
-			dependency_version = NULL;
+			line = dstrcpy(line, NULL);
 		} else {
 			line = dstrcatc(line, ch);
 		}
@@ -55,8 +51,15 @@ int get_all_dependencies_from_dependencies_file(const char *path, struct Depende
 
 	fclose(dependency_file);
 
+	free(line);
+	free(dependency_url);
+	free(dependency_version);
+
 	dependency_file = NULL;
 	dependency = NULL;
+	line = NULL;
+	dependency_url = NULL;
+	dependency_version = NULL;
 
 	return 1;
 }
