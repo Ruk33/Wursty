@@ -16,7 +16,7 @@ char *dstrcpy(char *source, const char *to_copy)
 	if (source == NULL) {
 		source = malloc(sizeof(char) * (to_copy_len+1));
 	} else {
-		source = realloc(source, sizeof(char) * (strlen(source)+to_copy_len+1));
+		source = realloc(source, sizeof(char) * (to_copy_len+1));
 	}
 
 	if (to_copy != NULL) {
