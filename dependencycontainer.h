@@ -28,9 +28,9 @@ struct DependencyContainer *DependencyContainer_create()
 void DependencyContainer_destroy(struct DependencyContainer *dc)
 {
 	free(dc->dependencies);
-	free(dc);
-
 	dc->dependencies = NULL;
+
+	free(dc);
 }
 
 struct Dependency *DependencyContainer_get_dependency_by_name(struct DependencyContainer *dc, const char *name)
