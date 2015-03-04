@@ -26,7 +26,7 @@ If no version is pointed, master will be.
 Simple run this command
 
 ```
-cd wurst/project && wursty [path/to/dependency/folder]
+cd wurst/project && wursty [path/to/folder/where/dependencies/file/is]
 ```
 
 Example
