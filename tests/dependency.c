@@ -77,15 +77,11 @@ void main()
 	command = dstrcat(command, "/dependency && git checkout 1234");
 	ec(command, dependency_get_update_command(c, current_path));
 
-	free(d);
-	free(from_url);
-	free(from_invalid_url);
-	free(c);
-	free(command);
+	Dependency_destroy(d);
+	Dependency_destroy(from_url);
+	Dependency_destroy(from_invalid_url);
+	Dependency_destroy(c);
 
-	d = NULL;
-	from_url = NULL;
-	from_invalid_url = NULL;
-	c = NULL;
+	free(command);
 	command = NULL;
 }

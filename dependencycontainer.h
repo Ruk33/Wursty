@@ -31,6 +31,7 @@ void DependencyContainer_destroy(struct DependencyContainer *dc)
 	dc->dependencies = NULL;
 
 	free(dc);
+	dc = NULL;
 }
 
 struct Dependency *DependencyContainer_get_dependency_by_name(struct DependencyContainer *dc, const char *name)

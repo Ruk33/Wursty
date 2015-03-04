@@ -29,8 +29,14 @@ void main()
 	a(!DependencyContainer_dependency_is_registered(dc, "pocho"), "pocho shouldnt be marked as registered in dc");
 
 	DependencyContainer_destroy(dc);
+
 	free(d);
 	free(r);
 	free(e);
 	free(s);
+
+	d = NULL;
+	r = NULL;
+	e = NULL;
+	s = NULL;
 }

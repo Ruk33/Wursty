@@ -29,10 +29,6 @@ char *dependency_get_update_command(struct Dependency *dependency, const char *p
 	char *dependency_path = NULL;
 	char *command = NULL;
 
-	//getcwd(current_path, sizeof(current_path));
-
-	//dependency_path = setstr(current_path);
-	//dependency_path = appstr(dependency_path, "/");
 	dependency_path = dstrcpy(dependency_path, path);
 	dependency_path = dstrcat(dependency_path, "/");
 	dependency_path = dstrcat(dependency_path, dependency->name);
@@ -143,6 +139,20 @@ struct Dependency *Dependency_create_from_url(const char *url)
 	Dependency_set_name_from_url(instance);
 
 	return instance;
+}
+
+void Dependency_destroy(struct Dependency *d)
+{
+	free(d->name);
+	free(d->url);
+	free(d->version);
+
+	d->name = NULL;
+	d->url = NULL;
+	d->version = NULL;
+
+	free(d);
+	d = NULL;
 }
 
 #endif
