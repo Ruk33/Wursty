@@ -19,8 +19,8 @@ void update_all_dependencies(struct DependencyContainer *dc, struct Dependency *
 	dependency_file_path = dstrcat(dependency_file_path, "/dependencies");
 
 	if (!get_all_dependencies_from_dependencies_file(dependency_file_path, ddc)) {
-		printf("%s\n", dependency_file_path);
-		printf("\n >> [WARN] dependencies file was not found\n");
+		printf("\n >> [WARN] dependencies file was not found in:");
+		printf("\n >> %s\n", dependency_file_path);
 	}
 
 	for (i = 0; i < ddc->count; i++) {
