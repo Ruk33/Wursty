@@ -8,7 +8,7 @@
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_RESET "\x1b[0m"
 
-void update_all_dependencies(struct DependencyContainer *dc, const char *package_root_folder_path, const char *package_folder_path)
+void update_all_dependencies(struct DependencyContainer *dc, struct Dependency *d, const char *package_root_folder_path, const char *package_folder_path)
 {
 	struct DependencyContainer *ddc = DependencyContainer_create();
 	char *dependency_file_path = NULL;
@@ -25,7 +25,12 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 	for (i = 0; i < ddc->count; i++) {
 		switch (DependencyContainer_add(dc, ddc->dependencies[i])) {
 			case DEPENDENCY_CONTAINER_ADDED_CORRECTLY:
-				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
+				if (d) {
+					printf("\n >> Dependency %s requested by %s\n", ddc->dependencies[i]->name, d->name);
+				} else {
+					printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
+				}
+
 				printf(ANSI_COLOR_GREEN"    >> [OK] Updating dependency\n\n"ANSI_COLOR_RESET);
 
 				dependency_package_folder = dstrcpy(dependency_package_folder, package_root_folder_path);
@@ -33,12 +38,16 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 				dependency_package_folder = dstrcat(dependency_package_folder, ddc->dependencies[i]->name);
 
 				Dependency_update(ddc->dependencies[i], package_root_folder_path);
-				update_all_dependencies(dc, package_root_folder_path, dependency_package_folder);
+				update_all_dependencies(dc, ddc->dependencies[i], package_root_folder_path, dependency_package_folder);
 
 				break;
 
 			case DEPENDENCY_CONTAINER_VERSION_ERROR:
-				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
+				if (d) {
+					printf("\n >> Dependency %s requested by %s\n", ddc->dependencies[i]->name, d->name);
+				} else {
+					printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
+				}
 				printf(
 					ANSI_COLOR_RED
 					"    >> [ERROR] Dependency is required in version %s but version %s is already registered by %s\n"
@@ -80,7 +89,7 @@ int main(int argc, char *args[])
 	dependencies_folder_path = dstrcat(dependencies_folder_path, "/wurst/vendor");
 
 	printf("\n >> Welcome to Wursty!\n");
-	update_all_dependencies(dc, dependencies_folder_path, project_root_path);
+	update_all_dependencies(dc, NULL, dependencies_folder_path, project_root_path);
 
 	DependencyContainer_destroy(dc);
 
