@@ -4,6 +4,10 @@
 #include "dependency.h"
 #include "dstr.h"
 
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_RESET "\x1b[0m"
+
 void update_all_dependencies(struct DependencyContainer *dc, const char *package_root_folder_path, const char *package_folder_path)
 {
 	struct DependencyContainer *ddc = DependencyContainer_create();
@@ -22,7 +26,7 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 		switch (DependencyContainer_add(dc, ddc->dependencies[i])) {
 			case DEPENDENCY_CONTAINER_ADDED_CORRECTLY:
 				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
-				printf("    >> [OK] Updating dependency\n\n");
+				printf(ANSI_COLOR_GREEN"    >> [OK] Updating dependency\n\n"ANSI_COLOR_RESET);
 
 				dependency_package_folder = dstrcpy(dependency_package_folder, package_root_folder_path);
 				dependency_package_folder = dstrcat(dependency_package_folder, "/");
@@ -36,7 +40,9 @@ void update_all_dependencies(struct DependencyContainer *dc, const char *package
 			case DEPENDENCY_CONTAINER_VERSION_ERROR:
 				printf("\n >> Dependency %s\n", ddc->dependencies[i]->name);
 				printf(
-					"    >> [ERROR] Dependency is required in version %s but version %s is already registered by %s\n",
+					ANSI_COLOR_RED
+					"    >> [ERROR] Dependency is required in version %s but version %s is already registered by %s\n"
+					ANSI_COLOR_RESET,
 					ddc->dependencies[i]->version,
 					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->version,
 					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->name
