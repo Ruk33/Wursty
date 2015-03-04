@@ -49,10 +49,8 @@ Example:
 - proyect root
   - wurst
     - vendor
-      - `<github user name for dependency 1>`
-        - `<package name>`
-      - `<github user name for dependency 2>`
-        - `<package name>`
+      - `<package name>`
+      - `<package name>`
 
 ##What happens if a dependency is requested in multiple versions?
 It will only display an error message (I know, high tech).
