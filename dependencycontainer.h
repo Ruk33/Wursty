@@ -60,9 +60,11 @@ int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d
 {
 	int i;
 
-	if (!d) {
+	if (!d || strlen(d->url) == 0) {
 		return DEPENDENCY_CONTAINER_INVALID_DEPENDENCY;
 	}
+
+	Dependency_set_name_from_url(d);
 
 	for (i = 0; i < dc->count; i++) {
 		// Check dependency already registered
