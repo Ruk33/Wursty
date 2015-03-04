@@ -54,12 +54,14 @@ void main()
 
 	Dependency_set_name(c, "testdependency");
 	Dependency_set_url(c, "google.com");
+	Dependency_set_version(c, "1234");
 
 	getcwd(current_path, sizeof(current_path));
 
 	command = setstr("cd ");
 	command = appstr(command, current_path);
-	command = appstr(command, "/testdependency && git pull origin master");
+	command = appstr(command, "/testdependency && git pull origin master && git checkout ");
+	command = appstr(command, c->version);
 
 	ec(command, dependency_get_update_command(c, ""));
 
@@ -69,7 +71,7 @@ void main()
 
 	command = setstr("cd ");
 	command = appstr(command, current_path);
-	command = appstr(command, "/dependency && git clone --progress --quiet google.com .");
+	command = appstr(command, "/dependency && git clone --progress --quiet google.com . && git checkout 1234");
 	ec(command, dependency_get_update_command(c, ""));
 
 	free(d);

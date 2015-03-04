@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "dependenciesfilereader.h"
 #include "dependencycontainer.h"
 #include "dependency.h"
@@ -7,12 +8,16 @@ int main(int argc, char *args[])
 {
     struct DependencyContainer *dc = DependencyContainer_create();
     char *dependencies_file_path = NULL;
+    char current_path[1024];
     int i;
 
     if (argc == 2) {
         dependencies_file_path = dstrcpy(dependencies_file_path, args[1]);
     } else {
-        dependencies_file_path = dstrcpy(dependencies_file_path, "wurst/vendor/dependencies");
+        getcwd(current_path, sizeof(current_path));
+
+        dependencies_file_path = dstrcpy(dependencies_file_path, current_path);
+        dependencies_file_path = dstrcat(dependencies_file_path, "/dependencies");
     }
 
     printf("\n'%s'\n", dependencies_file_path);

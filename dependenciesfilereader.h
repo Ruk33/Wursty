@@ -41,7 +41,7 @@ void get_all_dependencies_from_dependencies_file(const char *path, struct Depend
 
 			if (DependencyContainer_add(dc, dependency) == DEPENDENCY_CONTAINER_VERSION_ERROR) {
 				if (display_errors) {
-					printf(" [ERROR] Dependency %s is required in different versions\n", dependency->name);
+					printf(" [ERROR] Dependency %s is required in version %s but version %s is already registered\n", dependency->name, dependency->version, DependencyContainer_get_dependency_by_name(dc, dependency->name)->version);
 				}
 			}
 

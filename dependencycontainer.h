@@ -33,6 +33,21 @@ void DependencyContainer_destroy(struct DependencyContainer *dc)
 	dc->dependencies = NULL;
 }
 
+struct Dependency *DependencyContainer_get_dependency_by_name(struct DependencyContainer *dc, const char *name)
+{
+	struct Dependency *d = NULL;
+	int i;
+
+	for (i = 0; i < dc->count; i++) {
+		if (strcmp(name, dc->dependencies[i]->name) == 0) {
+			d = dc->dependencies[i];
+			break;
+		}
+	}
+
+	return d;
+}
+
 int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d)
 {
 	int i;

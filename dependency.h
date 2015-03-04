@@ -51,6 +51,9 @@ char *dependency_get_update_command(struct Dependency *dependency, const char *p
 		command = appstr(command, " .");
 	}
 
+	command = appstr(command, " && git checkout ");
+	command = appstr(command, dependency->version);
+
 	free(s);
 	free(dependency_path);
 
