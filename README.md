@@ -14,12 +14,6 @@ Its simple, the format is:
 <dependency repository url>,<version/commit>
 ```
 
-**Note:** Version are not supported yet, so avoid them (just write the dependency url), example:
-```
-<dependency repository url>
-<dependency repository url>
-```
-
 Example
 ```
 http://github.com/Ruk33/somepackage.git,master
@@ -32,8 +26,16 @@ If no version is pointed, master will be.
 Simple run this command
 
 ```
-cd wurst/project && wursty run
+cd wurst/project && wursty [path/to/dependency/folder]
 ```
+
+Example
+
+```
+cd wurst/project && wursty c:/wurst-project/
+```
+
+If no path is passed, then it will be assing the current dir (from where you're executing wursty.exe).
 
 This will grab all the dependencies of your project and place them in the vendor folder.
 
@@ -47,7 +49,7 @@ Example:
         - `<package name>`
 
 ##What happens if a dependency is requested in multiple versions?
-It will (when implemented) only display an error message (I know, high tech).
+It will only display an error message (I know, high tech).
 
 ##How to compile?
 ```
