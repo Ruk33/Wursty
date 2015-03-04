@@ -1,5 +1,7 @@
 #include <stdlib.h>
+#include <unistd.h>
 #include "assert.h"
+#include "../setstr.h"
 #include "../dependency.h"
 
 void main()
@@ -7,6 +9,9 @@ void main()
 	struct Dependency *d = Dependency_create();
 	struct Dependency *from_url = Dependency_create_from_url("github.com:Ruk33/something.git");
 	struct Dependency *from_invalid_url = Dependency_create_from_url(NULL);
+	struct Dependency *c = Dependency_create();
+	char current_path[1024];
+	char *command;
 
 	ec("", d->name);
 
@@ -47,7 +52,35 @@ void main()
 	ec("HEAD", from_url->version);
 	ec("HEAD", from_invalid_url->version);
 
+	Dependency_set_name(c, "testdependency");
+	Dependency_set_url(c, "google.com");
+
+	getcwd(current_path, sizeof(current_path));
+
+	command = setstr("cd ");
+	command = appstr(command, current_path);
+	command = appstr(command, "/testdependency && git pull origin master");
+
+	ec(command, dependency_get_update_command(c, ""));
+
+	free(command);
+
+	Dependency_set_name(c, "dependency");
+
+	command = setstr("cd ");
+	command = appstr(command, current_path);
+	command = appstr(command, "/dependency && git clone --progress --quiet google.com .");
+	ec(command, dependency_get_update_command(c, ""));
+
 	free(d);
 	free(from_url);
 	free(from_invalid_url);
+	free(c);
+	free(command);
+
+	d = NULL;
+	from_url = NULL;
+	from_invalid_url = NULL;
+	c = NULL;
+	command = NULL;
 }
