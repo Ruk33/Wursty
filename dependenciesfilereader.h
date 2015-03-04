@@ -21,6 +21,8 @@ int get_all_dependencies_from_dependencies_file(const char *path, struct Depende
 		return 0;
 	}
 
+	dependency = Dependency_create();
+
 	do {
 		ch = fgetc(dependency_file);
 
@@ -36,12 +38,11 @@ int get_all_dependencies_from_dependencies_file(const char *path, struct Depende
 				dependency_version++;
 			}
 
-			dependency = Dependency_create_from_url(dependency_url);
+			Dependency_set_url(dependency, dependency_url);
+			Dependency_set_name_from_url(dependency);
 			Dependency_set_version(dependency, dependency_version);
 
 			DependencyContainer_add(dc, dependency);
-
-			Dependency_destroy(dependency);
 
 			line = dstrcpy(line, NULL);
 
@@ -51,6 +52,8 @@ int get_all_dependencies_from_dependencies_file(const char *path, struct Depende
 			line = dstrcatc(line, ch);
 		}
 	} while(ch != EOF);
+
+	Dependency_destroy(dependency);
 
 	fclose(dependency_file);
 

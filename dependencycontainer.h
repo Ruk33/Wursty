@@ -73,7 +73,7 @@ int DependencyContainer_add(struct DependencyContainer *dc, struct Dependency *d
 		return DEPENDENCY_CONTAINER_INVALID_DEPENDENCY;
 	}
 
-	dependency = Dependency_create(d->url);
+	dependency = Dependency_create();
 
 	Dependency_set_name(dependency, d->name);
 	Dependency_set_url(dependency, d->url);
