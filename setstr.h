@@ -19,7 +19,7 @@ char *setstr(const char *d)
 	if (d)
 		return strcpy(malloc(sizeof(char) * (strlen(d)+1)), d);
 	else
-		return strcpy(malloc(sizeof(char)), "\0");
+		return strcpy(malloc(sizeof(char)), "");
 }
 
 char *appstr(char *s, const char *d)
