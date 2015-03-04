@@ -85,6 +85,7 @@ int main(int argc, char *args[])
 		project_root_path = dstrcpy(project_root_path, current_path);
 	}
 
+	project_root_path = dstrcat(project_root_path, "/");
 	dependencies_folder_path = dstrcpy(dependencies_folder_path, project_root_path);
 	dependencies_folder_path = dstrcat(dependencies_folder_path, "/wurst/vendor");
 
