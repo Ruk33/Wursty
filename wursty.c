@@ -53,8 +53,8 @@ void update_all_dependencies(struct DependencyContainer *dc, struct Dependency *
 					ANSI_COLOR_RED
 					"    >> [ERROR] Dependency is required in version %s\n    >> but version %s is already registered by %s\n"
 					ANSI_COLOR_RESET,
-					ddc->dependencies[i]->version,
-					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->version,
+					ddc->dependencies[i]->short_version,
+					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->short_version,
 					DependencyContainer_get_dependency_by_name(dc, ddc->dependencies[i]->name)->name
 				);
 

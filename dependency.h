@@ -13,6 +13,7 @@ struct Dependency
 	char *name;
 	char *url;
 	char *version;
+	char *short_version;
 };
 
 /**
@@ -84,6 +85,15 @@ void Dependency_set_url(struct Dependency *dependency, const char *url)
 	dependency->url = dstrcpy(dependency->url, url);
 }
 
+char *Dependency_set_short_version(struct Dependency *d)
+{
+	d->short_version = dstrcpy(d->short_version, d->version);
+
+	if (strlen(d->short_version) == 40) {
+		d->short_version[7] = '\0';
+	}
+}
+
 void Dependency_set_version(struct Dependency *dependency, const char *version)
 {
 	if (version && strcmp(version, "") != 0) {
@@ -91,6 +101,8 @@ void Dependency_set_version(struct Dependency *dependency, const char *version)
 	} else {
 		dependency->version = dstrcpy(dependency->version, "master");
 	}
+
+	Dependency_set_short_version(dependency);
 }
 
 void Dependency_set_name_from_url(struct Dependency *dependency)
@@ -139,6 +151,7 @@ struct Dependency *Dependency_create()
 	instance->name = NULL;
 	instance->url = NULL;
 	instance->version = NULL;
+	instance->short_version = NULL;
 
 	Dependency_set_name(instance, NULL);
 	Dependency_set_url(instance, NULL);
@@ -162,10 +175,12 @@ void Dependency_destroy(struct Dependency *d)
 	free(d->name);
 	free(d->url);
 	free(d->version);
+	free(d->short_version);
 
 	d->name = NULL;
 	d->url = NULL;
 	d->version = NULL;
+	d->short_version = NULL;
 
 	free(d);
 	d = NULL;

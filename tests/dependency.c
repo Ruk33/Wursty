@@ -37,8 +37,11 @@ void main()
 	ec("something", d->name);
 
 	ec("master", d->version);
-	Dependency_set_version(d, "15654651");
-	ec("15654651", d->version);
+	ec("master", d->short_version);
+
+	Dependency_set_version(d, "a74d8ce387e2d11be02d93dc463855379f04d066");
+	ec("a74d8ce387e2d11be02d93dc463855379f04d066", d->version);
+	ec("a74d8ce", d->short_version);
 
 	Dependency_set_version(d, NULL);
 	ec("master", d->version);
